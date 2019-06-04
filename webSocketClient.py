@@ -8,9 +8,19 @@ def connect():
 
 
 @sio.event
-def caca(data):
-    print('message received with ', data)
-    sio.emit('my response', {'response': 'my response'})
+def smartphone(data):
+    print('message received with smartphone ', data)
+
+
+@sio.event
+def eye(data):
+    print('message received with eye ', data)
+
+
+@sio.event
+def wallplug(data):
+    print('message received with  wallplug', data)
+
 
 @sio.event
 def disconnect():
@@ -19,4 +29,5 @@ def disconnect():
 sio.connect('https://635d7aa8.ngrok.io')
 print('my sid is', sio.sid)
 sio.wait()
+
 

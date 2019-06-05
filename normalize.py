@@ -1,89 +1,45 @@
-import os
+import pandas
 import csv
 
-#Constantes température
-MaxTemp = int(30)
-MinTemp = int(13)
-
-#Constantes Lux
-MaxLux = int(33000)
-MinLux = int(0)
-
-#Constantes accéléromètre
-
-#Constantes electriques
-MaxElec = int(2500)
-MinElec = int(0)
-
-def normalizeElec(dataElecList):
-    normalizedElecList = []
-    Xmax = MaxElec
-    Xmin = MinElec
-    divisor = Xmax-Xmin
-    for i in range(len(dataElecList)):
-        normalizedElecList.append(round((dataElecList[i]-Xmin)/divisor,2))
-    # print("Liste conso elec normalisee : \n")
-    # print(normalizedElecList)
-    # print("\n")
-    return normalizedElecList
+import constantes
 
 
-def normalizeLux(dataLuxList):
-    normalizedLuxList = []
-    Xmax = MaxLux
-    Xmin = MinLux
-    divisor = Xmax-Xmin
-    for i in range(len(dataLuxList)):
-        normalizedLuxList.append(round((dataLuxList[i]-Xmin)/divisor,2))
-
-    # print("Liste luminance normalisee : \n")
-    # print(normalizedLuxList)
-    # print("\n")
-    return normalizedLuxList
-
-def normalizeTemp(dataTempList):
-    normalizedTempList = []
-    Xmax = MaxTemp
-    Xmin = MinTemp
-    divisor = Xmax-Xmin
-    for i in range(len(dataTempList)):
-     normalizedTempList.append(round((dataTempList[i]-Xmin)/divisor,2))
+class Normalize:
 
 
-    # print("Liste temperatures normalisee : \n")
-    # print(normalizedTempList)
-    # print("\n")
-    return normalizedTempList
+    def __init__(self,file,file_normalize):
+        self.file=file
+        self.file_normalize=file_normalize
 
-def writeInCsv(normalizedTempList, normalizedLuxList, normalizedElecList):
-    with open('Iris_normalized.csv', 'w', newline='') as csvfile:
-        data_writer = csv.writer(csvfile)
-        for i in range(len(normalizedTempList)):
-            data_writer.writerow([normalizedTempList[i], normalizedLuxList[i], normalizedTempList[i]])
+    def normalize_one_column(self,data,Xmax,Xmin):
+        normalizedData = []
+        divisor = Xmax-Xmin
+        for i in range(len(data)):
+            if(type(data[i])== str):
+                data[i]=data[i].replace(',','.')
+            print(type(data[i]))
+            normalizedData.append(round((float(data[i])-Xmin)/divisor,2))
 
-
-def main():
-    dataList = []
-    dataTempList = []
-    dataLuxList = []
-    dataElecList = []
-    with open('Iris.csv', newline='', encoding='utf8', errors='ignore') as csvfile:
-        data_reader = csv.reader(csvfile, delimiter=';', quotechar='|')
-        next(data_reader)
-        
-        # On passe dans un tableau les valeurs du csv
-        for data in data_reader:
-            dataList.append(data)
-
-        # On attribue a chacune des liste les bonnes valeurs
-        for i in range(len(dataList)):
-            dataTempList.append(float(dataList[i][0]))
-            dataLuxList.append(float(dataList[i][1]))
-            dataElecList.append(float(dataList[i][2]))
-    # print(dataTempList)
-    # print(dataLuxList)
-    writeInCsv(normalizeTemp(dataTempList), normalizeLux(dataLuxList), normalizeElec(dataElecList))
+        return normalizedData
 
 
+    def normalize(self):
+        with open(self.file, newline='', encoding='utf8', errors='ignore') as csvfile:
+            data_reader = pandas.read_csv(csvfile)
+            electricite = data_reader.Temperature
+            lumiere = data_reader.Luminance
+            power =data_reader.Power
 
-main()
+            electricite_normalized = self.normalize_one_column(electricite,constantes.MaxTemp,constantes.MinTemp)
+            lumiere_normalized = self.normalize_one_column(lumiere,constantes.MaxLux,constantes.MinLux)
+            power_normalized = self.normalize_one_column(power,constantes.MaxElec,constantes.MinElec)
+
+
+            data_reader.Temperature = electricite_normalized
+            data_reader.Luminance =  lumiere_normalized
+            data_reader.Power = power_normalized
+            data_reader.to_csv(self.file,index=False)
+
+
+test=Normalize('iris_training.csv','Iris_normalized.csv')
+test.normalize()

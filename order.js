@@ -1,7 +1,7 @@
 // Alexa Proactive API sample script
 
 const https = require('https');
-const mode = 'dev'; // or 'prod'
+const mode = 'dev'; // or 'prod'no
 
 
 const clientID = `amzn1.application-oa2-client.776dfdba0f9b4d2f96e6f27b66aaff39`;

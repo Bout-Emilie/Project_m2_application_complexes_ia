@@ -21,7 +21,7 @@ def normalizeElec(dataElecList):
     Xmin = MinElec
     divisor = Xmax-Xmin
     for i in range(len(dataElecList)):
-        normalizedElecList.append((dataElecList[i]-Xmin)/divisor)
+        normalizedElecList.append(round((dataElecList[i]-Xmin)/divisor,2))
     # print("Liste conso elec normalisee : \n")
     # print(normalizedElecList)
     # print("\n")
@@ -34,7 +34,8 @@ def normalizeLux(dataLuxList):
     Xmin = MinLux
     divisor = Xmax-Xmin
     for i in range(len(dataLuxList)):
-        normalizedLuxList.append((dataLuxList[i]-Xmin)/divisor)
+        normalizedLuxList.append(round((dataLuxList[i]-Xmin)/divisor,2))
+
     # print("Liste luminance normalisee : \n")
     # print(normalizedLuxList)
     # print("\n")
@@ -46,11 +47,19 @@ def normalizeTemp(dataTempList):
     Xmin = MinTemp
     divisor = Xmax-Xmin
     for i in range(len(dataTempList)):
-        normalizedTempList.append((dataTempList[i]-Xmin)/divisor)
+     normalizedTempList.append(round((dataTempList[i]-Xmin)/divisor,2))
+
+
     # print("Liste temperatures normalisee : \n")
     # print(normalizedTempList)
     # print("\n")
     return normalizedTempList
+
+def writeInCsv(normalizedTempList, normalizedLuxList, normalizedElecList):
+    with open('Iris_normalized.csv', 'w', newline='') as csvfile:
+        data_writer = csv.writer(csvfile)
+        for i in range(len(normalizedTempList)):
+            data_writer.writerow([normalizedTempList[i], normalizedLuxList[i], normalizedTempList[i]])
 
 
 def main():
@@ -73,9 +82,8 @@ def main():
             dataElecList.append(float(dataList[i][2]))
     # print(dataTempList)
     # print(dataLuxList)
-    normalizeTemp(dataTempList)
-    normalizeLux(dataLuxList)
-    normalizeElec(dataElecList)
+    writeInCsv(normalizeTemp(dataTempList), normalizeLux(dataLuxList), normalizeElec(dataElecList))
+
 
 
 main()

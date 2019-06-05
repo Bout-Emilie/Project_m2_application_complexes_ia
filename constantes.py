@@ -1,8 +1,27 @@
 
-CSV_COLUMN_NAMES = ['SepalLength', 'SepalWidth',
-                    'PetalLength', 'PetalWidth', 'Species']
+CSV_COLUMN_NAMES = ['Heure', 'Temperature',
+                    'Burglar', 'Power', 'Luminance','Sensor','Alerte']
 
-SPECIES = ['Setosa', 'Versicolor', 'Virginica']
+ALERTE = ['0', '1']
 
 
 URI = "https://cf1e9fab.ngrok.io"
+
+data_training = 'iris_training.csv'
+data_test = 'iris_test.csv'
+
+
+#Constantes température
+MaxTemp = int(30)
+MinTemp = int(0)
+
+#Constantes Lux
+MaxLux = int(33)
+MinLux = int(0)
+
+
+#Constantes electriques
+MaxElec = int(25)
+MinElec = int(0)
+
+

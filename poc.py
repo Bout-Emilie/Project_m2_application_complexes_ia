@@ -64,7 +64,7 @@ class Tensor:
             # Determine le nombre de couche et le nombre de neurones pour chaque
             hidden_units=[10, 10],
             # Determine le nombre de sortie.
-            n_classes=3)
+            n_classes=2)
 
         # Train the Model.
         self.classifier.train(
@@ -86,10 +86,12 @@ class Tensor:
     def predict(self,predict_x,batch_size):
 
         predict_x = {
-            'SepalLength': [15, 5.9, 6.9],
-            'SepalWidth': [15, 3.0, 3.1],
-            'PetalLength': [15, 4.2, 5.4],
-            'PetalWidth': [15, 1.5, 2.1],
+            'Heure': [1],
+            'Temperature': [0.1],
+            'Burglar': [2],
+            'Power': [0.01],
+            'Luminance':[0.06],
+            'Sensor':[0],
         }
 
         predictions = self.classifier.predict(
@@ -102,7 +104,7 @@ class Tensor:
             probability = pred_dict['probabilities']
 
             print(class_id)
-            print(constantes.SPECIES[class_id.item(0)])
+            print(constantes.ALERTE[class_id.item(0)])
 
-        return constantes.SPECIES[class_id.item(0)]
+        return constantes.ALERTE[class_id.item(0)]
 

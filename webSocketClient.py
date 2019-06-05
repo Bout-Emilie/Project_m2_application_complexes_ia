@@ -57,20 +57,30 @@ def format_data_eye(data):
 
     label = data.get("label")
     value = 0
+    sauv = 1
     valeur = data.get("value")
+    new_item =""
 
     if(label == "Burglar"):
            if(valeur != 0):
             value = 1
+            sauv =0
 
     if(label == "Sensor"):
         if(valeur == "True"):
             value = 1
+            sauv =0
 
     if(label =="Luminance"):
         value = valeur
+        sauv = 0
 
-    new_item = item.Item(label,value)
+    if(label == "Temperature"):
+        value = valeur
+        sauv = 0
+
+    if(sauv == 0):
+     new_item = item.Item(label,value)
 
     return new_item
 

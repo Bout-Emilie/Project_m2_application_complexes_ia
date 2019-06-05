@@ -16,7 +16,7 @@ MaxTemp = int(30)
 MinTemp = int(0)
 
 #Constantes Lux
-MaxLux = int(33)
+MaxLux = int(2000)
 MinLux = int(0)
 
 

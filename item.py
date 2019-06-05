@@ -16,14 +16,14 @@ class Item:
     def __getHeure__(self):
         return self.heure
 
-    def __getType(self):
+    def __getType__(self):
         return self.type
 
-    def __setValue(self,value):
+    def __setValue__(self,value):
         self.value = value
 
-    def __setHeure(self,heure):
+    def __setHeure__(self,heure):
         self.heure=heure
 
-    def __setType(self,type):
+    def __setType__(self,type):
         self.type=type

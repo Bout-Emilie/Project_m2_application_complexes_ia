@@ -22,6 +22,10 @@ def smartphonee(data):
 
 @sio.event
 def eye(data):
+    new_item = format_data_eye(data)
+    if new_item is not None:
+        print(new_item.__getValue__())
+        print(new_item.__getType__())
     print('message received with eye ', data)
 
 
@@ -61,31 +65,36 @@ def format_data_eye(data):
     label = data.get("label")
     value = 0
     sauv = 1
-    valeur = data.get("value")
-    new_item =""
+
+
 
     if(label == "Burglar"):
+           valeur = data.get("value")
+           print(valeur)
            if(valeur != 0):
-            value = 1
-            sauv =0
+                value = 1
+           sauv =0
 
     if(label == "Sensor"):
+        valeur = data.get("value")
+        print('test')
         if(valeur == "True"):
             value = 1
             sauv =0
 
     if(label =="Luminance"):
-        value = valeur
+        value =  data.get("value")
+        print(value)
         sauv = 0
 
     if(label == "Temperature"):
-        value = valeur
+        value =  data.get("value")
         sauv = 0
 
     if(sauv == 0):
      new_item = item.Item(label,value)
+     return new_item
 
-    return new_item
 
 
 def format_data_waal_plug(data):
@@ -113,18 +122,18 @@ def normalizer(XMax,XMin,data):
 
 def main():
 
-    file_training = normalize.Normalize(constantes.data_training)
-    file_normaliser_training = file_training.normalizer()
+    #file_training = normalize.Normalize(constantes.data_training)
+   # file_training.normalizer()
 
-    file_test = normalize.Normalize(constantes.data_test)
-    file_normaliser_test = file_test.normalizer()
+    #file_test = normalize.Normalize(constantes.data_test)
+    #file_test.normalizer()
 
-    ia = poc.Tensor("Alerte", file_normaliser_training, file_normaliser_test)
+    ia = poc.Tensor("Alerte", constantes.data_training, constantes.data_test)
     ia.train(100, 1000)
 
     sio.connect(constantes.URI)
     print('my sid is', sio.sid)
-    #if temps time hours
+
 
 
 if __name__ == '__main__':

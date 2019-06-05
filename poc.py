@@ -85,14 +85,7 @@ class Tensor:
 
     def predict(self,predict_x,batch_size):
 
-        predict_x = {
-            'Heure': [1],
-            'Temperature': [0.1],
-            'Burglar': [2],
-            'Power': [0.01],
-            'Luminance':[0.06],
-            'Sensor':[0],
-        }
+
 
         predictions = self.classifier.predict(
             input_fn=lambda: self.eval_input_fn(predict_x,

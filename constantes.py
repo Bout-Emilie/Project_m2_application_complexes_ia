@@ -5,7 +5,7 @@ CSV_COLUMN_NAMES = ['Heure', 'Temperature',
 ALERTE = ['0', '1']
 
 
-URI = "https://cf1e9fab.ngrok.io"
+URI = "https://f2903f85.ngrok.io"
 
 data_training = 'iris_training.csv'
 data_test = 'iris_test.csv'
@@ -16,7 +16,7 @@ MaxTemp = int(30)
 MinTemp = int(0)
 
 #Constantes Lux
-MaxLux = int(33)
+MaxLux = int(2000)
 MinLux = int(0)
 
 

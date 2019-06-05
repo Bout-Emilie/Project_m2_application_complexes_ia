@@ -1,5 +1,7 @@
 import socketio
 import item
+import poc
+import normalize
 import constantes
 
 sio = socketio.Client()
@@ -21,11 +23,12 @@ def smartphonee(data):
 @sio.event
 def eye(data):
     print('message received with eye ', data)
-    print('test')
+
+
 
 
 @sio.event
-def wallplug(data):
+def wallpluge(data):
     print('message received with  wallplug', data)
 
 
@@ -101,10 +104,28 @@ def format_data_waal_plug(data):
     return new_item
 
 
+def normalizer(XMax,XMin,data):
 
-sio.connect(constantes.URI)
-print('my sid is', sio.sid)
-#if temps time hours
-sio.wait()
+    divisor =XMax-XMin
+    res = round((data - XMin) / divisor,2)
+    return res
 
 
+def main():
+
+    file_training = normalize.Normalize(constantes.data_training)
+    file_normaliser_training = file_training.normalizer()
+
+    file_test = normalize.Normalize(constantes.data_test)
+    file_normaliser_test = file_test.normalizer()
+
+    ia = poc.Tensor("Alerte", file_normaliser_training, file_normaliser_test)
+    ia.train(100, 1000)
+
+    sio.connect(constantes.URI)
+    print('my sid is', sio.sid)
+    #if temps time hours
+
+
+if __name__ == '__main__':
+    main()

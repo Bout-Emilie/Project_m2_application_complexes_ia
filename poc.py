@@ -6,15 +6,15 @@ import constantes
 class Tensor:
 
 
-    def __init__(self,y_name="Species",train_path="iris_training.csv",test_path="iris_test.csv"):
+    def __init__(self,y_name="Alerte",train_path="iris_training.csv",test_path="iris_test.csv"):
 
 
         #Construit les DataFrames de training  a partir du CSV
-        train = pd.read_csv(train_path, names=constantes.CSV_COLUMN_NAMES, header=0)
+        train = pd.read_csv(train_path, names=constantes.CSV_COLUMN_NAMES, header=1)
         self.train_x, self.train_y = train, train.pop(y_name)
 
         # Construit les DataFrames de test a partir du CSV
-        test = pd.read_csv(test_path, names=constantes.CSV_COLUMN_NAMES, header=0)
+        test = pd.read_csv(test_path, names=constantes.CSV_COLUMN_NAMES, header=1)
         self.test_x, self.test_y = test, test.pop(y_name)
         self.classifier = ""
 

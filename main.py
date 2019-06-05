@@ -6,12 +6,12 @@ import normalize
 import constantes
 
 
-file_training = normalize.Normalize(constantes.data_training)
-file_normaliser_training = file_training.normalizer()
+#file_training = normalize.Normalize(constantes.data_training)
+#file_normaliser_training = file_training.normalizer()
 
 
-file_test = normalize.Normalize(constantes.data_test)
-file_normaliser_test = file_test.normalizer()
+#file_test = normalize.Normalize(constantes.data_test)
+#file_normaliser_test = file_test.normalizer()
 
 
 ia = poc.Tensor()

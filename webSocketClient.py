@@ -5,6 +5,23 @@ import normalize
 import constantes
 
 sio = socketio.Client()
+last_once = {
+    'Heure': [1],
+    'Temperature': [0.5],
+    'Burglar': [1],
+    'Power': [0.00],
+    'Luminance': [0.00],
+    'Sensor': [0],
+}
+
+#file_training = normalize.Normalize(constantes.data_training)
+#file_training.normalizer()
+
+#file_test = normalize.Normalize(constantes.data_test)
+#file_test.normalizer()
+
+ia = poc.Tensor("Alerte", constantes.data_training, constantes.data_test)
+ia.train(100, 1000)
 
 @sio.event
 def connect():
@@ -24,8 +41,17 @@ def smartphonee(data):
 def eye(data):
     new_item = format_data_eye(data)
     if new_item is not None:
+        new=[]
         print(new_item.__getValue__())
         print(new_item.__getType__())
+        value = new_item.__getValue__()
+        type = new_item.__getType__()
+        new.append(value)
+        last_once[type] =  new
+        print(last_once)
+        res_ia = ia.predict(last_once,100)
+        print(res_ia)
+
     print('message received with eye ', data)
 
 
@@ -84,11 +110,12 @@ def format_data_eye(data):
 
     if(label =="Luminance"):
         value =  data.get("value")
-        print(value)
+        value = normalizer(constantes.MaxLux,constantes.MinLux,int(value))
         sauv = 0
 
     if(label == "Temperature"):
         value =  data.get("value")
+        value = normalizer(constantes.MaxTemp, constantes.MinTemp, int(value))
         sauv = 0
 
     if(sauv == 0):
@@ -115,21 +142,12 @@ def format_data_waal_plug(data):
 
 def normalizer(XMax,XMin,data):
 
-    divisor =XMax-XMin
+    divisor = XMax - XMin
     res = round((data - XMin) / divisor,2)
     return res
 
 
 def main():
-
-    #file_training = normalize.Normalize(constantes.data_training)
-   # file_training.normalizer()
-
-    #file_test = normalize.Normalize(constantes.data_test)
-    #file_test.normalizer()
-
-    ia = poc.Tensor("Alerte", constantes.data_training, constantes.data_test)
-    ia.train(100, 1000)
 
     sio.connect(constantes.URI)
     print('my sid is', sio.sid)

@@ -4,3 +4,5 @@ CSV_COLUMN_NAMES = ['SepalLength', 'SepalWidth',
 
 SPECIES = ['Setosa', 'Versicolor', 'Virginica']
 
+
+URI = "https://cf1e9fab.ngrok.io"

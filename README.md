@@ -14,5 +14,5 @@ pip3 install pandas
 ##Lancer l ia 
 
 ```shell
-python3 main.py
+python3 websocketClient.py
 ```

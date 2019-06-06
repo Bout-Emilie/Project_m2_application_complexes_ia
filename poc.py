@@ -73,7 +73,6 @@ class Tensor:
             steps=train_steps)
 
         # Evaluate the model.
-        print(self.train_x)
         eval_result = self.classifier.evaluate(
             input_fn=lambda: self.eval_input_fn(self.test_x, self.test_y,
                                                batch_size))
@@ -86,7 +85,6 @@ class Tensor:
     def predict(self,predict_x,batch_size):
 
 
-
         predictions = self.classifier.predict(
             input_fn=lambda: self.eval_input_fn(predict_x,
                                                labels=None,
@@ -96,8 +94,6 @@ class Tensor:
             class_id = pred_dict['class_ids']
             probability = pred_dict['probabilities']
 
-            print(class_id)
-            print(constantes.ALERTE[class_id.item(0)])
 
         return constantes.ALERTE[class_id.item(0)]
 

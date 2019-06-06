@@ -5,10 +5,10 @@ CSV_COLUMN_NAMES = ['Heure', 'Temperature',
 ALERTE = ['0', '1']
 
 
-URI = "https://f2903f85.ngrok.io"
+URI = "https://3e4365ff.ngrok.io"
 
-data_training = 'iris_training.csv'
-data_test = 'iris_test.csv'
+data_training = 'data_training.csv'
+data_test = 'data_test.csv'
 
 
 #Constantes température

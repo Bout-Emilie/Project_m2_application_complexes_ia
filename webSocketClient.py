@@ -4,6 +4,7 @@ import poc
 import normalize
 import constantes
 
+
 sio = socketio.Client()
 last_once = {
     'Heure': [1],
@@ -14,6 +15,7 @@ last_once = {
     'Sensor': [0],
 }
 
+
 #file_training = normalize.Normalize(constantes.data_training)
 #file_training.normalizer()
 
@@ -23,10 +25,10 @@ last_once = {
 ia = poc.Tensor("Alerte", constantes.data_training, constantes.data_test)
 ia.train(100, 1000)
 
+
 @sio.event
 def connect():
 
-    ##Init IA
     print('connection established')
 
 
@@ -42,15 +44,15 @@ def eye(data):
     new_item = format_data_eye(data)
     if new_item is not None:
         new=[]
-        print(new_item.__getValue__())
-        print(new_item.__getType__())
         value = new_item.__getValue__()
         type = new_item.__getType__()
         new.append(value)
         last_once[type] =  new
-        print(last_once)
         res_ia = ia.predict(last_once,100)
-        print(res_ia)
+        if(res_ia == "1"):
+            sio.emit('alexaorder', {'message': 'ok'})
+
+
 
     print('message received with eye ', data)
 
@@ -58,13 +60,34 @@ def eye(data):
 
 
 @sio.event
-def wallpluge(data):
+def wallplug(data):
+    new_item = format_data_waal_plug(data)
+    if new_item is not None:
+        new = []
+        value = new_item.__getValue__()
+        type = new_item.__getType__()
+        new.append(value)
+        last_once[type] = new
+        res_ia = ia.predict(last_once, 100)
+        if (res_ia == "1"):
+            sio.emit('alexaorder', {'message': 'ok'})
+
+
     print('message received with  wallplug', data)
 
 
 @sio.event
 def disconnect():
     print('disconnected from server')
+
+@sio.event
+def alexavalue(data):
+    print('value')
+    print(data)
+    if(int(data) == 0):
+        print('Emettre alerte')
+
+
 
 
 def format_data_phone(data):
@@ -96,14 +119,12 @@ def format_data_eye(data):
 
     if(label == "Burglar"):
            valeur = data.get("value")
-           print(valeur)
            if(valeur != 0):
                 value = 1
            sauv =0
 
     if(label == "Sensor"):
         valeur = data.get("value")
-        print('test')
         if(valeur == "True"):
             value = 1
             sauv =0
@@ -130,14 +151,10 @@ def format_data_waal_plug(data):
 
     if(label == "Power"):
 
-        diff = int(data.get("preValue")) - int(data.get("value"))
-        diff= abs(diff)
-
-        if(diff > 2):
-            value = data.get("value")
-            new_item = item.Item(label,value)
-
-    return new_item
+        value = data.get("value")
+        value = normalizer(constantes.MaxElec, constantes.MinElec, float(value))
+        new_item = item.Item(label,value)
+        return new_item
 
 
 def normalizer(XMax,XMin,data):
